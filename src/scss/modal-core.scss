@@ -1,0 +1,174 @@
+.mdr-overlay {
+	height: 100%;
+	width: 100%;
+	background-color: rgba(#000, 0.7);
+	visibility: hidden;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 9990;
+
+	&.show {
+		visibility: visible;
+
+		.modal {
+			&.iframe {
+				iframe {
+					visibility: visible;
+				}
+			}
+		}
+	}
+
+	.modal {
+		@include rem-calc(padding, 20);
+		background-color: #FFF;
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		z-index: 9999;
+		@include translate3(-50%, -50%, 0);
+
+		&.iframe {
+			height: 50%;
+			width: 70%;
+
+			iframe {
+				height: 100%;
+				width: 100%;
+				border: none;
+				visibility: hidden;
+			}
+		}
+
+		.content {
+			height: 100%;
+			width: 100%;
+			overflow: hidden;
+		}
+	}
+
+	.close-btn {
+		@include rem-calc(height, 30);
+		@include rem-calc(width, 30);
+		background-color: #DBAD86;
+		text-align: center;
+		border-radius: 100%;
+		display: block;
+		position: absolute;
+		@include rem-calc(right, -15);
+		@include rem-calc(top, -15);
+
+		i {
+			color: #FC4B6D;
+			@include rem-calc(font-size, 25);
+			
+			&:before {
+				vertical-align: middle;
+			}
+		}
+	}
+}
+
+.mdr-fade-overlay {
+	@extend .mdr-overlay;
+
+	background-color: transparent;
+
+	&:before {
+		content: "";
+		height: 100%;
+		width: 100%;
+		background-color: rgba(#000, 0.7);
+		@include opacity(0);
+		display: block;
+		transition: opacity 400ms linear;
+	}
+
+	&.show {
+		&:before {
+			@include opacity(1);
+		}
+	}
+}
+
+.mdr-slide-overlay {
+	@extend .mdr-overlay;
+
+	visibility: visible;
+	left: -100%;
+	transition: left 400ms ease;
+
+	&.show {
+		left: 0;
+	}
+
+	.modal {
+		@include rem-calc(padding, 50, 0, 0, 0);
+		height: 100%;
+		width: 100%;
+		background-color: #BDDAC3;
+		position: static;
+		@include translate3(0, 0, 0);
+
+		&.iframe {
+			height: 100%;
+			width: 100%;
+		}
+	}
+
+	.content {
+		background-color: #FFF;
+	}
+
+	.close-btn {
+		background-color: #FFF;
+		text-align: center;
+		@include rem-calc(right, 10);
+		@include rem-calc(top, 10);
+	}
+}
+
+.mdr-custom-overlay {
+	@extend .mdr-slide-overlay;
+
+	.modal-header {
+		@include rem-calc(height, 50);
+		@include rem-calc(padding, 0, 20);
+		background-color: #FFF;
+		text-align: right;
+
+		ul,
+		li {
+			float: right;
+			overflow: hidden;
+
+			a {
+				@include rem-calc(font-size, 30);
+				@include rem-calc(line-height, 50);
+				display: block;
+			}
+		}
+
+		li {
+			@include rem-calc(padding-left, 15);
+		}
+	}
+
+	.modal {
+		padding: 0;
+	}
+
+	.close-btn {
+		height: auto;
+		width: auto;
+		@include rem-calc(margin-left, 20);
+		@include rem-calc(line-height, 50);
+		float: right;
+		position: static;
+
+		i {
+			@include rem-calc(font-size, 20);
+		}
+	}
+}

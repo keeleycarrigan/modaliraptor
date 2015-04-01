@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Modaliraptor Demo</title>
+
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<div class="row">
+		<div class="sm-col-12">
+			<h1>Modaliraptor!</h1>
+
+			<div class="row">
+				<div class="md-col-12">
+					<h4>Image Modals</h4>
+				</div>
+				<div class="md-col-6">
+					<a href="//www.fillmurray.com/600/400" class="modal-link">Normal Image Modal</a>
+				</div>
+				<div class="md-col-6">
+					<a href="//nicenicejpg.com/600/400" class="modal-link" data-modal-options='{"modalUrl": "vanilla-ice"}'>Image Modal w/ URL</a>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="sm-col-12">
+					<h4>Iframe Modals</h4>
+				</div>
+				<div class="md-col-4">
+					<a href="http://www.keeleycarrigan.com" class="modal-link" data-modal-options='{"overlayClass": "mdr-fade-overlay", "contentType": "iframe", "modalModifier": "iframe"}'>Normal Iframe</a>	
+				</div>
+				<div class="md-col-4">
+					<a href="https://www.youtube.com/embed/-w-58hQ9dLk" class="modal-link" data-modal-options='{"overlayClass": "mdr-fade-overlay", "contentType": "iframe", "modalModifier": "iframe", "modalUrl": "youtube"}'>YouTube Link w/ URL</a>
+				</div>
+				<div class="sm-col-4">
+					<a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3259.7364550560587!2d-80.77713100000003!3d35.21303299999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88542027e36a897d%3A0xb3f63497d62b0d8e!2s4000+Belcross+Dr%2C+Charlotte%2C+NC+28205!5e0!3m2!1sen!2sus!4v1423849991759" width="800" class="modal-link" data-modal-options='{"overlayClass": "mdr-slide-overlay", "contentType": "iframe", "modalModifier": "iframe", "modalUrl": "google-maps", "ie8Center": false}'>Google Map in iFrame</a>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="sm-col-12">
+					<h4>Ajax Modals</h4>
+				</div>
+				<div class="md-col-6">
+					<a href="/partial.html" class="modal-link" data-modal-options='{"overlayClass": "mdr-fade-overlay", "contentType": "ajax"}'>Normal Ajax</a>
+				</div>
+				<div class="md-col-6">
+					<a href="partial3.html" class="modal-link" data-modal-options='{"overlayClass": "mdr-slide-overlay", "contentType": "ajax", "ajaxSettings": {"dataType": "html"}, "ajaxContext": "h2, p", "ie8Center": false}'>Ajax w/ Context</a>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="sm-col-12">
+					<h4>Custom Modals</h4>
+				</div>
+				<div class="md-col-4">
+					<a href="#" class="modal-link" data-modal-options='{"overlayClass": "mdr-fade-overlay", "contentType": "custom", "customContent": "<h1>Grillin Out Brah!!", "autoShow": true, "keepClosedId": "cc"}'>Custom Content</a>
+				</div>
+				<div class="md-col-4">
+					<a href="#inline-modal" class="modal-link" data-modal-options='{"contentType": "inline"}'>Inline Modal</a>
+				</div>
+				<div class="md-col-4">
+					<a href="//www.fillmurray.com/600/400" class="modal-link-2">Custom Modal Template</a>
+				</div>
+			</div>
+
+
+			<ul>
+				<!-- <li><a href="partial2.html" class="modal-link" data-modal-options='{"overlayClass": "mdr-slide-overlay", "contentType": "ajax", "ajaxSettings": {"dataType": "html"}, "ajaxContext": "h1, #article"}'>Ajax w/ Context</a></li> -->
+			</ul>
+		</div>
+	</div>
+
+	<div id="inline-modal" class="mdr-fade-overlay">
+		<div class="modal">
+			<a href="#" class="close-btn" data-close-modal><i class="fa fa-times"></i></a>
+			<div class="content">
+				<h1>Hullo!</h1>
+			</div>
+		</div>
+	</div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="js/lib/history.js"></script>
+	<script src="js/modaliraptor.js"></script>
+
+	<script>
+		$('.modal-link').modaliraptor({
+			closeBtnContent: '<i class="fa fa-times"></i>'
+		});
+
+		$('.modal-link-2').modaliraptor({
+			modalTemplate: '<div class="mdr-custom-overlay"><div class="modal-header"><a href="#" class="close-btn" data-close-modal>Close <i class="fa fa-times"></i></a><ul><li><a href="#" class="fa fa-bomb"></a></li><li><a href="#" class="fa fa-folder"></a></li></ul></div><div class="modal"><div class="content"></div></div></div>'
+		});
+	</script>
+</body>
+</html>

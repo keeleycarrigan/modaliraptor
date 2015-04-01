@@ -1,0 +1,29 @@
+body {
+	background-color: #EEE;
+}
+
+[class*="modal-link"] {
+	@include rem-calc(height, 40);
+	@include rem-calc(padding, 0, 15);
+	background-color: #FE8173;
+	color: #FFF;
+	font-weight: bold;
+	@include rem-calc(line-height, 40);
+	text-align: center;
+	display: block;
+	-webkit-transition: background-color 700ms linear;
+	transition: background-color 700ms linear;
+
+
+	&:hover {
+		background-color: #FC4B6D;
+	}
+}
+
+html {
+	font-size: 9px;
+
+	@media #{$xlarge} {
+		font-size: 10px;
+	}
+}
