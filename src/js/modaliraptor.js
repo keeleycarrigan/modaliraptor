@@ -2,6 +2,7 @@
     var pluginName = 'modaliraptor',
         isIE8 = !+'\v1',
         defaults = {
+            isFull: false,
             overlayClass: 'mdr-overlay',
             overlayModifier: '',
             overlayAttrs: '',
@@ -32,6 +33,7 @@
             closedDuration: 30,
             modalUrl: null,
             ie8Center: true,
+            onInit: $.noop,
             onCreate: $.noop,
             onOpen: $.noop,
             onClose: $.noop
@@ -80,6 +82,16 @@
                 }
                 
             });
+
+            /**
+                This is for a very weird bug in IE where the current history object doesn't
+                get updated if you open a modal with a url, click on a link in the modal that
+                takes you to the same page. In other browsers history.state.modal will be null,
+                but in IE it will still have the modal url of the modal you just left. Weird.
+            **/
+            if (history.state && history.state.modal && window.location.hash === '') {
+                history.go(-1);
+            }
         },
         getTrueValue = function (val) {
             if (isNaN(parseInt(val, 10))) {
@@ -166,6 +178,7 @@
 
     Plugin.prototype = {
         init: function () {
+            this.options.onInit(this);
             this.buildModal();
         },
         showConditions: function () {
@@ -181,6 +194,16 @@
             this.$modal = this.$overlay.find('.' + this.options.modalClass).addClass(this.options.modalModifier);
             this.$content = this.$overlay.find('.' + this.options.contentClass).addClass(this.options.contentModifier);
             this.$closeBtn = this.$overlay.find('.' + this.options.closeBtnClass);
+        },
+        buildCheck: function () {
+            var self = this,
+                checker = setInterval(function () {
+                    if (self.modalBuilding === 'done') {
+                        self.attachEvents();
+                        self.options.onCreate(self);
+                        clearInterval(checker);
+                    }
+                }, 100);
         },
         buildContent: function() {
             var content = this.getContent(),
@@ -202,6 +225,7 @@
                     }
 
                     self.$content.append(ajaxContent);
+                    self.modalBuilding = 'done';
                 })
                 .fail(function () {
                     self.$content.append('<p>Request Failed</p>');
@@ -209,12 +233,16 @@
 
             } else {
                 self.$content.append(content);
+                self.modalBuilding = 'done';
             }
         },
         buildModal: function () {
+            this.modalBuilding = 'pending';
+
             if (this.options.contentType === 'inline') {
                 /** To make an inline modal set the href of the modal link to the id of the inline modal html **/
                 this.processCustomTemplate(this.$el.attr('href'));
+                this.modalBuilding = 'done';
             } else {
                 if (this.options.modalTemplate) {
                     this.processCustomTemplate(this.options.modalTemplate);
@@ -232,13 +260,11 @@
                 this.buildContent();
             }
 
-            this.attachEvents();
+            this.buildCheck();
 
             if (this.showConditions()) {
                 this.show();
             }
-
-            this.options.onCreate();
 
         },
         attachEvents: function () {
@@ -303,7 +329,7 @@
         },
         show: function (e) {
             var self = e ? e.data.self : this,
-                modalUrl = self.options.linkToModal ? '#' : ''; //If you don't want to link to the modal you don't need the hash.
+                showHash = $('.no-history').length === 0 ? "#" : ""; // Relying on Modernizr test at this point.
 
             // Make sure another modal isn't open if one is auto opened & there's a url hash.
             $(':modalPlugin("isOpen")')[pluginName]('hide');
@@ -312,15 +338,17 @@
                 e.preventDefault();
 
                 if (self.options.modalUrl) {
-                    modalUrl += self.options.modalUrl;
-
-                    history.pushState({modal: self.options.modalUrl}, null, modalUrl);
+                    history.pushState({modal: self.options.modalUrl}, null, showHash + self.options.modalUrl);
                 }
             }
 
-            self.options.onOpen();
+            self.options.onOpen(self);
             self.$overlay.addClass(self.options.showClass);
             self.options.isOpen = true;
+
+            if (self.options.isFull) {
+                $('html').css('overflow', 'hidden');
+            }
 
             if (isIE8 && self.options.ie8Center) {
                 self.centerInIE8();
@@ -349,18 +377,26 @@
                 self.storeClosed();
             }
 
-            self.options.onClose();
+            self.options.onClose(self);
             self.$overlay.removeClass(self.options.showClass);
             self.options.isOpen = false;
+
+            if (self.options.isFull) {
+                $('html').css('overflow', 'auto');
+            }
         },
         overlayHide: function (e) {
-            e.preventDefault();
+            var self = e ? e.data.self : this;
 
-            var self = e.data.self;
+            if (!self.options.isFull) {
+                e.preventDefault();
 
-            if (e.target === self.$overlay[0]) {
-                self.hide(e);
+                if (e.target === self.$overlay[0]) {
+                    self.hide(e);
+                }
             }
+
+            
         },
         destroy: function () {
             $(window).off('popstate.modal.history')
