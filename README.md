@@ -194,7 +194,7 @@ Options : `'hover'`
 Used to give a custom namespace to attached modal events. Ideal for making sure other code doesn't remove modal specific events.
 
 Type: `string`  
-Default: `'ally.modal'`  
+Default: `'mdr'`  
 
 ##### closeBtnContent
 Set custom text or HTML on the modal's close button. Will be wrapped in an anchor tag by default. Useful for adding an icon to the close button.
