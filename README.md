@@ -122,9 +122,9 @@ Type: `string`
 Default: `'image'`  
 Options:  
   
-* `inline` - If you would like to use modal HTML rendered by the server pass this option and set the modal ID to the `src` attribute of the initialized element.  
-* `iframe` - Used for any modal content that will be primarily an iframe such as YouTube videos, Google Maps, etc. Set the iframe link to the `src` attribute of the initialized element.  
-* `ajax` - Used for pulling in HTML from another page. Set the ajax url to the `src` attribute of the initialized element. Can be used in conjuction with `ajaxContext` to only pull specific elements into the modal.  
+* `inline` - If you would like to use modal HTML rendered by the server pass this option and set the modal ID to the `href` attribute of the initialized element.  
+* `iframe` - Used for any modal content that will be primarily an iframe such as YouTube videos, Google Maps, etc. Set the iframe link to the `href` attribute of the initialized element.  
+* `ajax` - Used for pulling in HTML from another page. Set the ajax url on the `href` attribute of the initialized element. Can be used in conjuction with `ajaxContext` to only pull specific elements into the modal.  
 * `custom` - Used to pass custom HTML or text into the modal. Set the custom content with the `customContent` option.  
 
 ##### contentClass
